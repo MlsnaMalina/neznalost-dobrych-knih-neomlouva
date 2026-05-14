@@ -1,20 +1,25 @@
 /* =========================================================
-   Striktní paleta:
+   Paleta:
    bílá #ffffff · černá #000000 · #b11e54 · #4072ad · #98c451
-   Žádné jiné barvy (ani šedé z opacity / stínů).
+   + podpůrná šedá (--line-soft, --ink-soft) pro tenké linky
+     a sekundární text.
    ========================================================= */
 
 :root {
   --bg:    #ffffff;
   --paper: #ffffff;
   --ink:   #000000;
+  --ink-soft: #6b6b6b;   /* sekundární text */
   --line:  #000000;
+  --line-soft: #cfcfcf;  /* vlasové linky, jemné oddělovače */
   --accent: #4072ad;  /* modrá — CTA / hover */
   --good:   #98c451;  /* zelená — výhra / správné písmeno */
   --bad:    #b11e54;  /* magenta — prohra / špatné písmeno */
   --radius: 14px;
   --radius-sm: 8px;
+  /* Dvojice fontů — knižní/právní × technologický kontrast */
   --font-display: "Cormorant Garamond", "EB Garamond", "Georgia", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -22,7 +27,9 @@
   --bg:    #000000;
   --paper: #000000;
   --ink:   #ffffff;
+  --ink-soft: #9a9a9a;
   --line:  #ffffff;
+  --line-soft: #3a3a3a;
   /* akcenty zůstávají identické, ladí na obou pozadích */
 }
 
@@ -70,9 +77,11 @@ body {
 .footer {
   padding: 14px 22px;
   text-align: center;
-  color: var(--ink);
-  font-size: 12px;
-  border-top: 1.5px solid var(--line);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2px;
+  border-top: 1px solid var(--line-soft);
 }
 
 /* ===== App layout ===== */
@@ -91,11 +100,14 @@ body {
   padding: clamp(20px, 4vw, 40px);
 }
 
-/* ===== Buttons ===== */
+/* ===== Buttons =====
+   UI v monospace — kontrast vůči knižnímu serifu. */
 .btn {
-  font-family: var(--font-body);
-  font-size: 15px;
+  font-family: var(--font-mono);
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
   padding: 12px 22px;
   border-radius: 999px;
   border: 1.5px solid var(--line);
@@ -116,8 +128,11 @@ body {
   color: var(--ink);
 }
 .ghost-btn {
-  font-family: var(--font-body);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
   padding: 8px 14px;
   border-radius: 999px;
   border: 1.5px solid var(--line);
@@ -126,6 +141,22 @@ body {
   cursor: pointer;
 }
 .ghost-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+
+/* Akce v pravém horním rohu */
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.icon-btn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.icon-btn svg { display: block; }
 
 /* ===== Start screen ===== */
 .start {
@@ -148,7 +179,7 @@ body {
   margin: 0;
 }
 .start .sub {
-  color: var(--ink);
+  color: var(--ink-soft);
   max-width: 56ch;
   margin: 0;
   font-size: 14px;
@@ -169,48 +200,57 @@ body {
   flex-wrap: wrap;
 }
 .attempts {
-  font-size: 13px;
-  color: var(--ink);
-  letter-spacing: 0.3px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.6px;
   text-transform: uppercase;
 }
-.attempts strong { color: var(--ink); font-size: 16px; }
+.attempts strong { color: var(--ink); font-size: 15px; font-weight: 600; }
 
 .flash {
   min-height: 22px;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 16px;
-  color: var(--ink);
+  color: var(--ink-soft);
   text-align: center;
 }
 .flash.good { color: var(--good); }
 .flash.bad  { color: var(--bad); }
 
-/* ===== Title guess ===== */
+/* ===== Title guess =====
+   Konferenční projektor / pohled z dálky: větší písmo, tenké podtržítko,
+   výrazné mezery mezi slovy, odhalená písmena v plné černé. */
 .title-guess {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px 8px;
-  padding: 12px 4px 4px;
+  gap: 14px 6px;
+  padding: 12px 4px 8px;
 }
-.tg-word { display: inline-flex; gap: 4px; }
+.tg-word { display: inline-flex; gap: 6px; }
 .tg-slot {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(22px, 4vw, 32px);
-  min-width: 22px;
+  font-size: clamp(26px, 4.5vw, 36px);
+  min-width: 26px;
   text-align: center;
-  border-bottom: 2px solid var(--line);
+  /* vlasová šedá linka — působí jako prázdné políčko v dokumentu */
+  border-bottom: 1px solid var(--line-soft);
   padding: 2px 4px 4px;
   line-height: 1.2;
   user-select: none;
   color: var(--ink);
 }
-.tg-slot.revealed { color: var(--accent); border-bottom-color: var(--accent); }
-.tg-slot.punct { border-bottom: none; min-width: 10px; }
-.tg-slot.space { min-width: 14px; border-bottom: none; }
+/* Odhalené písmeno: tmavá grafitová → v naší paletě plná černá; bez podtržení. */
+.tg-slot.revealed {
+  color: var(--ink);
+  border-bottom-color: transparent;
+}
+.tg-slot.punct { border-bottom: none; min-width: 10px; color: var(--ink); }
+/* Mezery mezi slovy — výrazně širší, ať je hranice slov čitelná. */
+.tg-slot.space { min-width: 28px; border-bottom: none; }
 
 /* ===== Keyboard ===== */
 .keyboard {
@@ -250,41 +290,406 @@ body {
 }
 .key:disabled { cursor: not-allowed; }
 
-/* ===== Penalty (placeholder) ===== */
+/* ===== Penalty — postava advokáta =====
+   Jeden monolitní SVG. Stav fáze (.stage-0 … .stage-6) řídí
+   viditelnost a transformace jednotlivých částí (.part-*).
+   Animace přes CSS transitions na transform / opacity.
+   Varianta M/F se přepíná pomocí data-variant na rootu SVG. */
+
 .penalty {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  min-height: 64px;
-  padding: 8px 0;
+  align-items: flex-end;
+  min-height: 300px;
+  padding: 4px 0 8px;
+  position: relative;
 }
-.penalty-slot {
-  width: 44px; height: 44px;
-  border: 1.5px solid var(--line);
-  border-radius: var(--radius-sm);
-  display: inline-flex; align-items: center; justify-content: center;
+
+.advokat {
+  width: 200px;
+  height: 280px;
   color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 22px;
-  background: transparent;
 }
-.penalty-slot.taken {
-  border-color: var(--bad);
+/* Škubnutí — spouští se přidáním třídy .shake při zhoršení fáze. */
+.advokat.shake { animation: penalty-shake 220ms ease-out; }
+@keyframes penalty-shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px) rotate(-0.5deg); }
+  40%  { transform: translateX(4px) rotate(0.5deg); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+
+/* ===== Základní stylování všech částí ===== */
+.advokat * {
+  transition:
+    transform 500ms ease-out,
+    opacity 400ms ease-out,
+    fill 300ms ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Obrysová estetika — všechno tahy, ne fillem; talár plný. */
+.advokat .robe > path:not(.coffee-stain) {
+  fill: var(--ink);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.advokat .robe .collar {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.advokat .robe .coffee-stain {
+  fill: #6b3a1f;       /* tmavá kávová — povolená výjimka pro skvrnu */
+  opacity: 0;
+}
+
+.advokat .shoulders ellipse {
+  fill: var(--ink);
+}
+.advokat .shoulder-f { display: none; }
+.advokat[data-variant="f"] .shoulder-m { display: none; }
+.advokat[data-variant="f"] .shoulder-f { display: block; }
+
+.advokat .arms .sleeve {
+  fill: var(--ink);
+}
+.advokat .arms .hand {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.advokat .neck {
+  fill: #e6c9a8;       /* pleť — povolená výjimka */
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+.advokat .face {
+  fill: #e6c9a8;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.advokat .eyes-normal circle {
+  fill: var(--ink);
+}
+.advokat .eyes-x line {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.advokat .brows path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.advokat .mouth line,
+.advokat .mouth path {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  fill: none;
+}
+.advokat .mouth ellipse {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  fill: var(--bg);
+}
+.advokat .mouth .m-o,
+.advokat .mouth .m-worried,
+.advokat .mouth .m-despair { opacity: 0; }
+
+/* Vlasy — F má dlouhé, M má strniště */
+.advokat .hair path {
+  fill: var(--ink);
+}
+.advokat .stubble ellipse {
+  fill: var(--ink);
+  opacity: 0.5;
+}
+.advokat .hair-f { display: none; }
+.advokat[data-variant="f"] .hair-f { display: block; }
+.advokat[data-variant="f"] .hair-m { display: none; }
+
+/* ===== KLOBOUK ===== */
+.advokat .part-hat rect {
+  fill: var(--ink);
+}
+.advokat .part-hat .hat-ribbon {
+  fill: var(--bad);
+}
+
+/* ===== KRAVATA (vínová) ===== */
+.advokat .part-tie .tie-knot,
+.advokat .part-tie .tie-body {
+  fill: var(--bad);
+  stroke: var(--ink);
+  stroke-width: 0.6;
+}
+
+/* ===== ROZSYPANÝ SPIS ===== */
+.advokat .part-papers { opacity: 0; }
+.advokat .part-papers .paper {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.advokat .part-papers line {
+  stroke: var(--ink);
+  stroke-width: 0.7;
+  opacity: 0.7;
+}
+.advokat .part-papers .stamp {
+  fill: var(--bad);
+  opacity: 0.7;
+}
+
+/* ===== PADLÝ TALÁR ===== */
+.advokat .part-robe-dropped {
+  opacity: 0;
+}
+.advokat .part-robe-dropped path {
+  fill: var(--ink);
+}
+
+/* ===== SPODNÍ PRÁDLO ===== */
+.advokat .underwear { opacity: 0; }
+.advokat .underwear rect {
+  fill: var(--bad);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+.advokat .underwear .ug-mark {
+  font-family: var(--font-display);
+  font-size: 10px;
+  fill: var(--bg);
+  font-weight: 700;
+}
+.advokat .legs { opacity: 0; }
+.advokat .legs rect {
+  fill: #e6c9a8;
+  stroke: var(--ink);
+  stroke-width: 0.8;
+}
+
+/* ===== HRNEK ===== */
+.advokat .part-coffee-cup { opacity: 0; }
+.advokat .part-coffee-cup .cup {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.advokat .part-coffee-cup .cup-handle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.advokat .part-coffee-cup .cup-steam {
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* ===== FÁZE 1 — klobouk nakřivo ===== */
+.advokat.stage-1 .part-hat,
+.advokat.stage-2 .part-hat,
+.advokat.stage-3 .part-hat,
+.advokat.stage-4 .part-hat,
+.advokat.stage-5 .part-hat,
+.advokat.stage-6 .part-hat {
+  transform: translate(8px, 4px) rotate(35deg);
+}
+.advokat.stage-1 .mouth .m-neutral,
+.advokat.stage-1 .mouth .m-worried,
+.advokat.stage-1 .mouth .m-despair { opacity: 0; }
+.advokat.stage-1 .mouth .m-o { opacity: 1; }
+.advokat.stage-1 .brows path { transform: translateY(-3px); }
+
+/* ===== FÁZE 2 — kravata rozvázaná, znepokojení ===== */
+.advokat.stage-2 .part-tie .tie-knot,
+.advokat.stage-3 .part-tie .tie-knot,
+.advokat.stage-4 .part-tie .tie-knot,
+.advokat.stage-5 .part-tie .tie-knot,
+.advokat.stage-6 .part-tie .tie-knot {
+  opacity: 0;
+}
+.advokat.stage-2 .part-tie .tie-body,
+.advokat.stage-3 .part-tie .tie-body,
+.advokat.stage-4 .part-tie .tie-body,
+.advokat.stage-5 .part-tie .tie-body,
+.advokat.stage-6 .part-tie .tie-body {
+  transform: rotate(45deg) translate(8px, 6px);
+}
+.advokat.stage-2 .mouth .m-neutral { opacity: 0; }
+.advokat.stage-2 .mouth .m-worried { opacity: 1; }
+
+/* ===== FÁZE 3 — polití kávou, vyděšený výraz (X oči, O ústa) ===== */
+.advokat.stage-3 .robe .coffee-stain,
+.advokat.stage-4 .robe .coffee-stain {
+  opacity: 1;
+}
+.advokat.stage-3 .eyes-normal,
+.advokat.stage-4 .eyes-normal,
+.advokat.stage-5 .eyes-normal,
+.advokat.stage-6 .eyes-normal {
+  opacity: 0;
+}
+.advokat.stage-3 .eyes-x line,
+.advokat.stage-4 .eyes-x line,
+.advokat.stage-5 .eyes-x line,
+.advokat.stage-6 .eyes-x line {
+  opacity: 1;
+}
+.advokat.stage-3 .mouth .m-neutral { opacity: 0; }
+.advokat.stage-3 .mouth .m-o { opacity: 1; }
+.advokat.stage-3 .part-coffee-cup,
+.advokat.stage-4 .part-coffee-cup {
+  opacity: 1;
+}
+
+/* ===== FÁZE 4 — rozsypaný spis ===== */
+.advokat.stage-4 .part-papers,
+.advokat.stage-5 .part-papers,
+.advokat.stage-6 .part-papers {
+  opacity: 1;
+}
+.advokat.stage-4 .mouth .m-neutral { opacity: 0; }
+.advokat.stage-4 .mouth .m-o { opacity: 1; }
+
+/* ===== FÁZE 5 — talár spadl, spodní prádlo ===== */
+.advokat.stage-5 .robe,
+.advokat.stage-6 .robe,
+.advokat.stage-5 .shoulders,
+.advokat.stage-6 .shoulders,
+.advokat.stage-5 .arms .sleeve,
+.advokat.stage-6 .arms .sleeve,
+.advokat.stage-5 .part-tie,
+.advokat.stage-6 .part-tie,
+.advokat.stage-5 .part-coffee-cup,
+.advokat.stage-6 .part-coffee-cup {
+  opacity: 0;
+}
+.advokat.stage-5 .underwear,
+.advokat.stage-6 .underwear,
+.advokat.stage-5 .legs,
+.advokat.stage-6 .legs,
+.advokat.stage-5 .part-robe-dropped,
+.advokat.stage-6 .part-robe-dropped {
+  opacity: 1;
+}
+.advokat.stage-5 .mouth .m-neutral,
+.advokat.stage-5 .mouth .m-o { opacity: 0; }
+.advokat.stage-5 .mouth .m-despair,
+.advokat.stage-6 .mouth .m-despair { opacity: 1; }
+
+/* ===== Razítko ZAMÍTNUTO (overlay přes celou herní plochu) ===== */
+.verdict-stamp {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  pointer-events: none;
+  z-index: 5;
+  border: 6px solid var(--bad);
   color: var(--bad);
+  background: transparent;
+  padding: 14px 36px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(38px, 7vw, 64px);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  white-space: nowrap;
+  animation: stamp-strike 380ms cubic-bezier(.2,.9,.2,1.2) forwards;
+}
+@keyframes stamp-strike {
+  0%   { transform: translate(-50%, -50%) rotate(-12deg) scale(1.5); opacity: 0; }
+  60%  { transform: translate(-50%, -50%) rotate(-12deg) scale(0.95); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(-12deg) scale(1); opacity: 1; }
+}
+
+@media (max-width: 520px) {
+  .penalty { min-height: 240px; }
+  .advokat { width: 160px; height: 224px; }
+  .verdict-stamp { font-size: clamp(28px, 12vw, 48px); padding: 10px 24px; }
+}
+
+/* ===== Maxim card =====
+   Karta s latinskou maximou — zobrazí se po chybném tahu místo flash hlášky.
+   Tři řádky: štítek (mono, vínový), latina (serif italic), překlad (sans-serif soft). */
+.maxim-card {
+  border: 0.5px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
   background: var(--paper);
 }
-.penalty-slot .glyph { line-height: 1; }
+.maxim-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--bad);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.maxim-la {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(18px, 2.6vw, 22px);
+  color: var(--ink);
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+.maxim-cs {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Fade-in při zjevení (re-mount karty při novém renderu = animace běží znovu). */
+.maxim-enter { animation: maxim-fade-in 300ms ease-out; }
+@keyframes maxim-fade-in {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Závěrečná maxima ve výsledku — bez vínového štítku, mírně robustnější. */
+.maxim-final {
+  border: 1px solid var(--line);
+  padding: 18px 22px;
+}
 
 /* ===== Used letters ===== */
 .used-letters {
   text-align: center;
-  font-size: 13px;
-  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
   min-height: 18px;
+  letter-spacing: 0.4px;
 }
-.used-letters .label { text-transform: uppercase; letter-spacing: 0.3px; margin-right: 6px; }
+.used-letters .label {
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-right: 8px;
+  color: var(--ink);
+  font-weight: 600;
+}
 
 /* ===== Game footer actions ===== */
 .game-actions {
@@ -299,6 +704,13 @@ body {
   text-align: center;
   display: flex; flex-direction: column; gap: 14px; align-items: center;
 }
+.result-stamp-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
 .result .verdict {
   font-family: var(--font-display);
   font-weight: 600;
@@ -310,7 +722,7 @@ body {
 .result .quote {
   font-family: var(--font-display);
   font-style: italic;
-  color: var(--ink);
+  color: var(--ink-soft);
   margin: 0;
 }
 .result .reveal {
@@ -323,8 +735,10 @@ body {
   color: var(--ink);
 }
 .result .meta {
-  color: var(--ink);
-  font-size: 14px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.3px;
 }
 
 /* ===== Responsive tweaks ===== */
@@ -333,4 +747,7 @@ body {
   .app { padding: 18px 14px 28px; }
   .key { font-size: 16px; padding: 9px 0; }
   .penalty-slot { width: 38px; height: 38px; font-size: 19px; }
+  /* Na mobilu sundat mezeru mezi slovy o trochu níž, ať se titul vejde. */
+  .tg-slot { font-size: clamp(22px, 7vw, 28px); min-width: 22px; }
+  .tg-slot.space { min-width: 18px; }
 }

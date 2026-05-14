@@ -1,35 +1,51 @@
-/* GameResult — závěrečná obrazovka (výhra / prohra). */
+/* GameResult — závěrečná obrazovka (výhra / prohra).
+   - Při prohře: postava advokáta ve fázi 6 + razítko ZAMÍTNUTO překryté přes ni.
+   - Latinská maxima (Úkol 4) doplní `quote` po prohře a `flash` v průběhu hry. */
 
-window.WON_QUOTES = [
-  "Výborná příprava, kolego/kolegyně.",
-  "Obvinění z neznalosti se zamítá.",
-  "Znalost kvalitní literatury prokázána.",
-  "Titul uhodnut."
-];
-
-window.LOST_QUOTES = [
-  "Neznalost dobrých knih neomlouvá.",
-  "Doporučené opatření: doplnit právnickou knihovnu.",
-  "Titul zůstal neuhodnut."
-];
-
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-window.renderResult = function ({ status, book, mistakes, maxMistakes, onAgain }) {
+window.renderResult = function ({ status, book, mistakes, maxMistakes, onAgain, characterGender, finalMaxim }) {
   const root = document.createElement("section");
   root.className = "screen result";
+
+  // ===== Při prohře: postava + razítko =====
+  if (status === "lost") {
+    const stage = document.createElement("div");
+    stage.className = "result-stamp-stage";
+    // Postava ve fázi 6 (talár pryč, X oči, zoufalá ústa)
+    stage.appendChild(window.renderPenalty(6, maxMistakes, characterGender));
+    // Razítko ZAMÍTNUTO se vykreslí přes postavu
+    const stamp = document.createElement("div");
+    stamp.className = "verdict-stamp";
+    stamp.textContent = "ZAMÍTNUTO";
+    stage.appendChild(stamp);
+    root.appendChild(stage);
+  }
 
   const verdict = document.createElement("h2");
   verdict.className = "verdict " + (status === "won" ? "won" : "lost");
   verdict.textContent = status === "won"
-    ? "Verdikt: znalost prokázána."
-    : "Verdikt: neznalost dobrých knih neomlouvá.";
+    ? "Rozsudek: vyhráno. Případ uzavřen."
+    : "Rozsudek: propadl(a) jste.";
   root.appendChild(verdict);
 
-  const quote = document.createElement("p");
-  quote.className = "quote";
-  quote.textContent = status === "won" ? pick(window.WON_QUOTES) : pick(window.LOST_QUOTES);
-  root.appendChild(quote);
+  if (status === "won") {
+    const quote = document.createElement("p");
+    quote.className = "quote";
+    quote.textContent = "Tribunál uznává vaši erudici v oblasti AI práva.";
+    root.appendChild(quote);
+  } else if (finalMaxim) {
+    // Po prohře — závěrečná latinská maxima jako karta
+    const card = document.createElement("aside");
+    card.className = "maxim-card maxim-final";
+    const la = document.createElement("p");
+    la.className = "maxim-la";
+    la.textContent = finalMaxim.la;
+    const cs = document.createElement("p");
+    cs.className = "maxim-cs";
+    cs.textContent = finalMaxim.cs;
+    card.appendChild(la);
+    card.appendChild(cs);
+    root.appendChild(card);
+  }
 
   const reveal = document.createElement("div");
   reveal.className = "reveal";
@@ -53,7 +69,7 @@ window.renderResult = function ({ status, book, mistakes, maxMistakes, onAgain }
   const again = document.createElement("button");
   again.className = "btn";
   again.type = "button";
-  again.textContent = status === "won" ? "Hrát znovu" : "Zkusit další titul";
+  again.textContent = status === "won" ? "Nové řízení" : "Podat odvolání";
   again.addEventListener("click", onAgain);
   actions.appendChild(again);
   root.appendChild(actions);

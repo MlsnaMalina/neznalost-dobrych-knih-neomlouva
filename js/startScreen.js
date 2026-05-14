@@ -45,7 +45,7 @@ window.renderStartScreen = function (onStart) {
   const btn = document.createElement("button");
   btn.className = "btn";
   btn.type = "button";
-  btn.textContent = "Zahájit hru";
+  btn.textContent = "Zahájit řízení";
   btn.addEventListener("click", onStart);
   root.appendChild(btn);
 

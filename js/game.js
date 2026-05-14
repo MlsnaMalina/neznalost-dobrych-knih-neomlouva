@@ -13,7 +13,12 @@ window.createGame = function () {
     mistakes: 0,
     maxMistakes: window.MAX_MISTAKES,
     lastResult: null,            // "hit" | "miss" | null
-    lastBookId: null
+    lastBookId: null,
+    // Náhodně zvolená pohlavní varianta postavy advokáta pro tuto hru.
+    characterGender: "m",        // "m" | "f"
+    // Latinské maximy pro tuto hru (6 ks pro chyby + 1 závěrečná).
+    maxims: [],
+    finalMaxim: null
   };
 
   function pickBook() {
@@ -32,6 +37,8 @@ window.createGame = function () {
     const titleLetterSet = new Set(
       tokens.filter(t => t.kind === "letter").map(t => t.upper)
     );
+    // Zahodit cache postavy advokáta — nová hra = nová identita.
+    if (window.resetPenaltyCache) window.resetPenaltyCache();
     state = {
       ...state,
       status: "playing",
@@ -42,7 +49,10 @@ window.createGame = function () {
       mistakes: 0,
       maxMistakes: window.MAX_MISTAKES,
       lastResult: null,
-      lastBookId: book.id
+      lastBookId: book.id,
+      characterGender: Math.random() < 0.5 ? "m" : "f",
+      maxims: window.pickMaxims(window.MAX_MISTAKES),  // 6 ks, bez opakování
+      finalMaxim: window.pickFinalMaxim()
     };
   }
 
