@@ -57,21 +57,26 @@ function animateMaximHero(hero, card) {
   const dy = (cardRect.top + cardRect.height / 2) - (heroRect.top + heroRect.height / 2);
   const targetScale = Math.max(0.18, Math.min(0.45, cardRect.width / heroRect.width));
 
+  // Celkem 4400 ms: ~300 ms entry, ~3500 ms hold velkého textu, ~600 ms shrink.
+  const TOTAL = 4400;
+  const ENTRY_END = 0.07;   // ≈ 308 ms
+  const HOLD_END  = 0.86;   // ≈ 3784 ms  → hold trvá ~3476 ms
+
   // Backdrop (vnější hero div): fade in → hold → fade out
   hero.animate([
     { opacity: 0, offset: 0 },
-    { opacity: 1, offset: 0.14 },
-    { opacity: 1, offset: 0.70 },
+    { opacity: 1, offset: ENTRY_END },
+    { opacity: 1, offset: HOLD_END },
     { opacity: 0, offset: 1 }
-  ], { duration: 2400, easing: "ease-out", fill: "forwards" });
+  ], { duration: TOTAL, easing: "ease-out", fill: "forwards" });
 
   // Obsah: scale 0.94→1 (entry) → hold → scale-down + translate do pozice karty
   content.animate([
     { transform: "translate(0,0) scale(0.94)", opacity: 0, offset: 0 },
-    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: 0.14 },
-    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: 0.70 },
+    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: ENTRY_END },
+    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: HOLD_END },
     { transform: `translate(${dx}px, ${dy}px) scale(${targetScale})`, opacity: 0, offset: 1 }
-  ], { duration: 2400, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" });
+  ], { duration: TOTAL, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" });
 }
 
 window.renderGameScreen = function (state, actions) {
