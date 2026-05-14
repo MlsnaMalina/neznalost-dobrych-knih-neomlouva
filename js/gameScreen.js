@@ -11,29 +11,67 @@ window.GOOD_FLASH = [
 ];
 function pickMsg(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-/* Karta s latinskou maximou (Námitka č. X / Latina / Český překlad).
-   Renderuje se s krátkým fade-in přes CSS animaci .maxim-enter. */
-function renderMaximCard(index, maxim) {
-  const card = document.createElement("aside");
-  card.className = "maxim-card maxim-enter";
-  card.setAttribute("aria-live", "polite");
+/* Karta s latinskou maximou — varianta podle kontextu:
+   - "card": malá karta v bočním sloupci pod soudcem
+   - "hero": fullscreen overlay přes celou stránku (úvodní fáze) */
+function renderMaximBlock(index, maxim, variant) {
+  const root = document.createElement(variant === "hero" ? "div" : "aside");
+  root.className = variant === "hero" ? "maxim-hero" : "maxim-card maxim-enter";
+  root.setAttribute(variant === "hero" ? "aria-hidden" : "aria-live", variant === "hero" ? "true" : "polite");
+
+  // hero má vlastní vnitřní obal kvůli animaci scale+translate
+  const content = variant === "hero"
+    ? (() => { const d = document.createElement("div"); d.className = "maxim-hero-content"; root.appendChild(d); return d; })()
+    : root;
 
   const label = document.createElement("div");
   label.className = "maxim-label";
   label.textContent = `— Námitka č. ${index} —`;
-  card.appendChild(label);
+  content.appendChild(label);
 
   const la = document.createElement("p");
   la.className = "maxim-la";
   la.textContent = maxim.la;
-  card.appendChild(la);
+  content.appendChild(la);
 
   const cs = document.createElement("p");
   cs.className = "maxim-cs";
   cs.textContent = maxim.cs;
-  card.appendChild(cs);
+  content.appendChild(cs);
 
-  return card;
+  return root;
+}
+
+/* Spustí animaci: hero (full-screen) se zmenší a doletí do pozice malé karty.
+   Použijeme Web Animations API, abychom mohli přesně cílit DOM pozici card. */
+function animateMaximHero(hero, card) {
+  if (!hero || !card) return;
+  const content = hero.querySelector(".maxim-hero-content");
+  if (!content) return;
+
+  // Měření až po layoutu (rAF zaručí, že už proběhl) — getBoundingClientRect
+  // vrátí přesné pozice obou prvků v aktuálním viewportu.
+  const heroRect = content.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+  const dx = (cardRect.left + cardRect.width / 2) - (heroRect.left + heroRect.width / 2);
+  const dy = (cardRect.top + cardRect.height / 2) - (heroRect.top + heroRect.height / 2);
+  const targetScale = Math.max(0.18, Math.min(0.45, cardRect.width / heroRect.width));
+
+  // Backdrop (vnější hero div): fade in → hold → fade out
+  hero.animate([
+    { opacity: 0, offset: 0 },
+    { opacity: 1, offset: 0.14 },
+    { opacity: 1, offset: 0.70 },
+    { opacity: 0, offset: 1 }
+  ], { duration: 2400, easing: "ease-out", fill: "forwards" });
+
+  // Obsah: scale 0.94→1 (entry) → hold → scale-down + translate do pozice karty
+  content.animate([
+    { transform: "translate(0,0) scale(0.94)", opacity: 0, offset: 0 },
+    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: 0.14 },
+    { transform: "translate(0,0) scale(1)",    opacity: 1, offset: 0.70 },
+    { transform: `translate(${dx}px, ${dy}px) scale(${targetScale})`, opacity: 0, offset: 1 }
+  ], { duration: 2400, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" });
 }
 
 window.renderGameScreen = function (state, actions) {
@@ -100,8 +138,10 @@ window.renderGameScreen = function (state, actions) {
   side.appendChild(window.renderPenalty(mistakes, maxMistakes, state.characterGender));
 
   // Pod postavou: buď karta maximy (po chybě), nebo flash hláška.
+  let smallCard = null;
   if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
-    side.appendChild(renderMaximCard(mistakes, maxims[mistakes - 1]));
+    smallCard = renderMaximBlock(mistakes, maxims[mistakes - 1], "card");
+    side.appendChild(smallCard);
   } else {
     const flash = document.createElement("div");
     flash.className = "flash" + (lastResult === "hit" ? " good" : "");
@@ -113,6 +153,15 @@ window.renderGameScreen = function (state, actions) {
   stage.appendChild(center);
   stage.appendChild(side);
   root.appendChild(stage);
+
+  // Hero overlay přes celou stránku — pouze při čerstvé chybě.
+  // Animuje se ze středu obrazovky do pozice malé karty pod soudcem.
+  if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
+    const hero = renderMaximBlock(mistakes, maxims[mistakes - 1], "hero");
+    root.appendChild(hero);
+    // Po layoutu změřit pozici karty a spustit animaci
+    requestAnimationFrame(() => animateMaximHero(hero, smallCard));
+  }
 
   return root;
 };

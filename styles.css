@@ -268,9 +268,9 @@ body {
   user-select: none;
   color: var(--ink);
 }
-/* Odhalené písmeno: tmavá grafitová → v naší paletě plná černá; bez podtržení. */
+/* Odhalené písmeno: modrá z palety (akcent), bez podtržení. */
 .tg-slot.revealed {
-  color: var(--ink);
+  color: var(--accent);
   border-bottom-color: transparent;
 }
 .tg-slot.punct { border-bottom: none; min-width: 10px; color: var(--ink); }
@@ -740,6 +740,53 @@ body {
 .maxim-final {
   border: 1px solid var(--line);
   padding: 18px 22px;
+}
+
+/* ===== Hero overlay maxim (fáze 1: přes celou stránku) =====
+   Při chybě se nejdřív zobrazí latinská maxima přes celou stránku,
+   pak se animace zmenší a doletí do pozice malé karty pod soudcem. */
+.maxim-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--bg);
+  pointer-events: none;
+  opacity: 0;
+}
+.maxim-hero-content {
+  text-align: center;
+  max-width: 92vw;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.maxim-hero .maxim-label {
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.4vw, 16px);
+  color: var(--bad);
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  margin: 0 0 24px 0;
+}
+.maxim-hero .maxim-la {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(36px, 7vw, 84px);
+  color: var(--ink);
+  margin: 0 0 22px 0;
+  line-height: 1.1;
+}
+.maxim-hero .maxim-cs {
+  font-family: var(--font-body);
+  font-size: clamp(16px, 2.4vw, 28px);
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.35;
 }
 
 /* ===== Used letters ===== */
