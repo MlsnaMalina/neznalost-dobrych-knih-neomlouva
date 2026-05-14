@@ -18,21 +18,21 @@ const START_ILLUSTRATION_SVG = `
   <path d="M 55 300 Q 105 238 140 228 Q 175 238 220 300 Z" fill="#7aaa38"/>
 
   <!-- Zemní linie -->
-  <line x1="10" y1="300" x2="320" y2="300" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="10" y1="300" x2="320" y2="300" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
 
   <!-- Šibenice — svislý sloup -->
-  <line x1="140" y1="228" x2="140" y2="88" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+  <line x1="140" y1="228" x2="140" y2="88" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
   <!-- Vodorovné rameno -->
-  <line x1="140" y1="88" x2="210" y2="88" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/>
+  <line x1="140" y1="88" x2="210" y2="88" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
   <!-- Šikmá vzpěra -->
-  <line x1="140" y1="120" x2="175" y2="88" stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="140" y1="120" x2="175" y2="88" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
 
   <!-- Provaz + smyčka + kniha — kýve se kolem kotvy (210, 88) -->
   <g class="book-swing">
     <!-- Lano -->
-    <line x1="210" y1="88" x2="210" y2="130" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="210" y1="88" x2="210" y2="130" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     <!-- Smyčka lana -->
-    <path d="M 204 130 Q 204 138 210 140 Q 216 138 216 130" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M 204 130 Q 204 138 210 140 Q 216 138 216 130" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
 
     <!-- Kniha nakloněná -->
     <g transform="rotate(8, 210, 165)">
@@ -76,62 +76,62 @@ const START_ILLUSTRATION_SVG = `
        mávání křídly na vnitřním .crow-flap přes CSS keyframes. -->
   <g class="crow" transform="translate(52, 110)">
     <g class="crow-flap crow-flap-1">
-      <path d="M 0 0 Q -9 -7 -18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
-      <path d="M 0 0 Q 9 -7 18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 0 0 Q -9 -7 -18 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 9 -7 18 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(92, 88)">
     <g class="crow-flap crow-flap-2">
-      <path d="M 0 0 Q -6 -4 -12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M 0 0 Q 6 -4 12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M 0 0 Q -6 -4 -12 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M 0 0 Q 6 -4 12 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(272, 100)">
     <g class="crow-flap crow-flap-3">
-      <path d="M 0 0 Q -8 -6 -16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
-      <path d="M 0 0 Q 8 -6 16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 0 0 Q -8 -6 -16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 0 0 Q 8 -6 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(300, 78)">
     <g class="crow-flap crow-flap-4">
-      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
-      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(30, 72)">
     <g class="crow-flap crow-flap-5">
-      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
-      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(75, 48)">
     <g class="crow-flap crow-flap-6">
-      <path d="M 0 0 Q -4 -3 -8 0" fill="none" stroke="#1a1a1a" stroke-width="1.1" stroke-linecap="round"/>
-      <path d="M 0 0 Q 4 -3 8 0" fill="none" stroke="#1a1a1a" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M 0 0 Q -4 -3 -8 0" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M 0 0 Q 4 -3 8 0" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(155, 58)">
     <g class="crow-flap crow-flap-7">
-      <path d="M 0 0 Q -7 -5 -14 0" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M 0 0 Q 7 -5 14 0" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M 0 0 Q -7 -5 -14 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M 0 0 Q 7 -5 14 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(240, 50)">
     <g class="crow-flap crow-flap-8">
-      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
-      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(180, 32)">
     <g class="crow-flap crow-flap-9">
-      <path d="M 0 0 Q -3 -2 -6 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>
-      <path d="M 0 0 Q 3 -2 6 0" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-linecap="round"/>
+      <path d="M 0 0 Q -3 -2 -6 0" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      <path d="M 0 0 Q 3 -2 6 0" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
     </g>
   </g>
   <g class="crow" transform="translate(320, 138)">
     <g class="crow-flap crow-flap-10">
-      <path d="M 0 0 Q -4 -3 -8 0" fill="none" stroke="#1a1a1a" stroke-width="1.1" stroke-linecap="round"/>
-      <path d="M 0 0 Q 4 -3 8 0" fill="none" stroke="#1a1a1a" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M 0 0 Q -4 -3 -8 0" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M 0 0 Q 4 -3 8 0" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
     </g>
   </g>
 </svg>`;

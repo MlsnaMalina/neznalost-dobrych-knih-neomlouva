@@ -57,15 +57,11 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .brand-mark {
-  font-family: var(--font-display);
-  font-size: 28px;
-  line-height: 1;
-  border: 1.5px solid var(--line);
-  width: 36px; height: 36px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  background: var(--paper);
+  display: block;
+  width: 28px;
+  height: 28px;
   color: var(--ink);
+  flex: 0 0 auto;
 }
 .brand-name {
   font-family: var(--font-display);
@@ -185,6 +181,7 @@ body {
 .start-illustration {
   flex: 0 0 auto;
   width: clamp(360px, 42%, 560px);
+  color: var(--ink); /* SVG dědí přes currentColor — funguje i v dark módu */
 }
 .start-illustration svg {
   width: 100%;
