@@ -898,7 +898,7 @@ const PHASES = [
   <rect x="116" y="121" width="8" height="3" rx="1" fill="#FAF8F3" opacity="0.9"/>
   <path d="M 142 88 Q 144 83 147 88 Q 147 94 142 94 Q 139 92 142 88 Z" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.6"/>
   <!-- RAZÍTKO ZAMÍTNUTO - nakloněné -12°, vínová #993556 -->
-  <g transform="rotate(-12, 118, 210)">
+  <g class="stamp-group" transform="rotate(-12, 118, 210)">
     <rect x="28" y="170" width="180" height="78" rx="4"
           fill="none" stroke="#993556" stroke-width="4" opacity="0.82"
           filter="url(#stampFilter-ph6)"/>
@@ -922,4 +922,9 @@ const PHASES = [
 // Export pro ES moduly
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { PHASES };
+}
+
+// Globální zpřístupnění pro vanilla-JS runtime hry (window.* namespace)
+if (typeof window !== 'undefined') {
+  window.PHASES = PHASES;
 }

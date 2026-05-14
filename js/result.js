@@ -6,17 +6,11 @@ window.renderResult = function ({ status, book, mistakes, maxMistakes, onAgain, 
   const root = document.createElement("section");
   root.className = "screen result";
 
-  // ===== Při prohře: postava + razítko =====
+  // ===== Při prohře: postava ve fázi 6 (razítko ZAMÍTNUTO je součástí SVG) =====
   if (status === "lost") {
     const stage = document.createElement("div");
     stage.className = "result-stamp-stage";
-    // Postava ve fázi 6 (talár pryč, X oči, zoufalá ústa)
     stage.appendChild(window.renderPenalty(6, maxMistakes, characterGender));
-    // Razítko ZAMÍTNUTO se vykreslí přes postavu
-    const stamp = document.createElement("div");
-    stamp.className = "verdict-stamp";
-    stamp.textContent = "ZAMÍTNUTO";
-    stage.appendChild(stamp);
     root.appendChild(stage);
   }
 
