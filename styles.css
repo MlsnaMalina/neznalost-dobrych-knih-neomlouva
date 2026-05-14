@@ -89,10 +89,10 @@ body {
 /* ===== App layout ===== */
 .app {
   flex: 1;
-  max-width: 980px;
+  max-width: 1120px;
   width: 100%;
   margin: 0 auto;
-  padding: 28px 20px 40px;
+  padding: 28px 24px 40px;
 }
 
 .screen {
@@ -198,8 +198,8 @@ body {
    Na mobilu se to stackne pod sebe — postava jde nahoru, klávesnice pod ni. */
 .stage {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 36px;
   align-items: start;
 }
 .stage-center {
@@ -284,11 +284,16 @@ body {
    bílý vnitřek, jemný vnitřní stín pro hloubku. */
 .keyboard {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.kb-row {
+  display: flex;
   justify-content: center;
   gap: 8px;
-  max-width: 560px;
-  width: 100%;
+  flex-wrap: nowrap;
 }
 .key {
   font-family: var(--font-display);
@@ -591,7 +596,16 @@ body {
 @media (max-width: 520px) {
   .topbar { padding: 14px 16px; }
   .app { padding: 18px 14px 28px; }
-  .key { font-size: 16px; padding: 9px 0; }
+  /* Klávesy na mobilu zmenšit, aby se 11 kláves vešlo na řádek bez wrapu. */
+  .key {
+    width: clamp(28px, 7.8vw, 44px);
+    height: clamp(28px, 7.8vw, 44px);
+    font-size: clamp(13px, 3.6vw, 18px);
+    padding: 0;
+  }
+  .key.digraph { font-size: clamp(11px, 3vw, 14px); }
+  .kb-row { gap: 4px; }
+  .keyboard { gap: 6px; }
   .penalty-slot { width: 38px; height: 38px; font-size: 19px; }
   /* Na mobilu sundat mezeru mezi slovy o trochu níž, ať se titul vejde. */
   .tg-slot { font-size: clamp(22px, 7vw, 28px); min-width: 22px; }
