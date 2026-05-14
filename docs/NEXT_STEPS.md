@@ -97,6 +97,18 @@
 
 ---
 
+---
+
+## DŮLEŽITÁ POZNÁMKA: `character-phases.js` v rootu
+
+V rootu projektu leží soubor `character-phases.js` (~925 řádků). **To není mrtvý kód ani duplicita** — je to **pracovní zdrojový soubor uživatelky**, který přinesla do projektu pro další iteraci postavy advokáta. Bude se používat při pokračování práce na SVG postavě.
+
+**Nikdy ho nesmaž, nepřepiš ani „neoptimalizuj" bez výslovného pokynu uživatelky.** Než s ním začneš cokoli dělat, počkej, až ti uživatelka řekne, jak ho integrovat (např. „převezmi z `character-phases.js` definice fází místo aktuálních v `js/penalty.js`").
+
+Aktuální `js/penalty.js` zůstává v provozu, dokud uživatelka neřekne jinak.
+
+---
+
 ## Co NIKDY nedělat bez konzultace
 Viz `DO_NOT_CHANGE.md`. Stručně:
 - Měnit paletu.
