@@ -161,24 +161,22 @@ body {
 .icon-btn svg { display: block; }
 
 /* ===== Start screen =====
-   Vertikální vycentrovaný layout — nahoře velká SVG ilustrace, dole
-   titulek, perex, instrukce a CTA. Rámeček .screen drží stejnou šířku
-   jako herní obrazovka (sdílí .app + .screen).
+   Dvousloupcový layout (aby se obsah vešel na konferenční projektor bez
+   scrollu): vlevo SVG ilustrace, vpravo vycentrovaný text a CTA tlačítko
+   ve zbývajícím prostoru.
    Texty mikrokopií zůstávají Sentence Case v DOM; uppercase efekt
    na tlačítku řeší CSS (text-transform), aby sémantika v markupu
    odpovídala závaznému znění „Zahájit řízení". */
 .start-layout {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 32px;
+  gap: 40px;
   padding: 0;
 }
 .start-illustration {
-  width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
+  flex: 0 0 auto;
+  width: clamp(300px, 38%, 460px);
 }
 .start-illustration svg {
   width: 100%;
@@ -186,18 +184,19 @@ body {
   display: block;
 }
 .start-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  width: 100%;
-  max-width: 64ch;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
   min-width: 0;
 }
 .start-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin: 0;
@@ -205,14 +204,14 @@ body {
 .start-perex {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.55;
   color: var(--ink-soft);
   margin: 0;
 }
 .start-sub {
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
-  line-height: 1.6;
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  line-height: 1.55;
   color: var(--ink-soft);
   margin: 0;
 }
@@ -240,47 +239,75 @@ body {
   color: #1a1a1a;
 }
 
-/* ===== Animace vran =====
-   Vrány „poletují" — drift po obloze (translate v malém rádiu) plus
-   plynulé natáčení. Inline transform vnějšího <g class="crow"> drží
-   výchozí pozici, animace běží na vnitřním <g class="crow-drift">.
-   Každá vrána má vlastní timing, aby pohyby nevypadaly synchronně. */
-.crow-drift {
+/* ===== Animace v ilustraci =====
+   Provaz s knihou (.book-swing) se pomalu kývá kolem kotvy v bodě
+   (210, 88) v SVG viewBoxu. Pivot drží transform-origin v SVG souřadnicích
+   (transform-box: view-box je výchozí pro SVG elementy).
+
+   Vrány — vnější <g class="crow"> drží výchozí pozici (SVG transform),
+   vnitřní .crow-flap má rychlou CSS animaci translate + scaleY, která
+   simuluje mávání křídly. Každá vrána má vlastní durations/delay,
+   aby pohyby nevypadaly synchronně. */
+.book-swing {
+  transform-origin: 210px 88px;
+  animation: bookSwing 5s ease-in-out infinite;
+}
+@keyframes bookSwing {
+  0%   { transform: rotate(-4deg); }
+  50%  { transform: rotate(4deg);  }
+  100% { transform: rotate(-4deg); }
+}
+
+.crow-flap {
   transform-box: fill-box;
   transform-origin: center;
   will-change: transform;
 }
-@keyframes crowFly {
-  0%   { transform: translate(0px, 0px)    rotate(-2deg); }
-  25%  { transform: translate(10px, -6px)  rotate(3deg);  }
-  50%  { transform: translate(20px, -2px)  rotate(-1deg); }
-  75%  { transform: translate(10px, 5px)   rotate(2deg);  }
-  100% { transform: translate(0px, 0px)    rotate(-2deg); }
+@keyframes crowFlap {
+  0%   { transform: translate(0px, 0px)  scaleY(1);   }
+  25%  { transform: translate(1px, -1px) scaleY(0.45); }
+  50%  { transform: translate(2px, 0px)  scaleY(1);   }
+  75%  { transform: translate(1px, 1px)  scaleY(0.45); }
+  100% { transform: translate(0px, 0px)  scaleY(1);   }
 }
-@keyframes crowFlyAlt {
-  0%   { transform: translate(0px, 0px)   rotate(2deg);  }
-  25%  { transform: translate(-8px, 4px)  rotate(-3deg); }
-  50%  { transform: translate(-14px, 0px) rotate(1deg);  }
-  75%  { transform: translate(-6px, -5px) rotate(-1deg); }
-  100% { transform: translate(0px, 0px)   rotate(2deg);  }
+@keyframes crowFlapAlt {
+  0%   { transform: translate(0px, 0px)   scaleY(1);   }
+  25%  { transform: translate(-1px, 1px)  scaleY(0.4); }
+  50%  { transform: translate(-2px, 0px)  scaleY(1);   }
+  75%  { transform: translate(-1px, -1px) scaleY(0.4); }
+  100% { transform: translate(0px, 0px)   scaleY(1);   }
 }
-.crow-drift-1 { animation: crowFly    7s ease-in-out infinite;       }
-.crow-drift-2 { animation: crowFlyAlt 5.5s ease-in-out infinite -1.2s; }
-.crow-drift-3 { animation: crowFly    6.5s ease-in-out infinite -2.8s; }
-.crow-drift-4 { animation: crowFlyAlt 4.8s ease-in-out infinite -3.5s; }
-.crow-drift-5 { animation: crowFly    8s ease-in-out infinite -1.8s; }
+.crow-flap-1  { animation: crowFlap    0.7s ease-in-out infinite;        }
+.crow-flap-2  { animation: crowFlapAlt 0.55s ease-in-out infinite -0.2s; }
+.crow-flap-3  { animation: crowFlap    0.6s ease-in-out infinite -0.35s; }
+.crow-flap-4  { animation: crowFlapAlt 0.5s ease-in-out infinite -0.1s;  }
+.crow-flap-5  { animation: crowFlap    0.65s ease-in-out infinite -0.25s; }
+.crow-flap-6  { animation: crowFlapAlt 0.45s ease-in-out infinite -0.3s; }
+.crow-flap-7  { animation: crowFlap    0.58s ease-in-out infinite -0.4s; }
+.crow-flap-8  { animation: crowFlapAlt 0.62s ease-in-out infinite -0.15s; }
+.crow-flap-9  { animation: crowFlap    0.42s ease-in-out infinite -0.05s; }
+.crow-flap-10 { animation: crowFlapAlt 0.68s ease-in-out infinite -0.5s; }
 
 /* Respekt k uživatelskému nastavení redukce pohybu. */
 @media (prefers-reduced-motion: reduce) {
-  .crow-drift,
-  .crow-drift-1, .crow-drift-2, .crow-drift-3, .crow-drift-4, .crow-drift-5 {
+  .book-swing,
+  .crow-flap,
+  .crow-flap-1, .crow-flap-2, .crow-flap-3, .crow-flap-4, .crow-flap-5,
+  .crow-flap-6, .crow-flap-7, .crow-flap-8, .crow-flap-9, .crow-flap-10 {
     animation: none;
   }
 }
 
-@media (max-width: 640px) {
-  .start-layout { gap: 24px; }
-  .start-illustration { max-width: 320px; }
+@media (max-width: 780px) {
+  .start-layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .start-illustration {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
 }
 
 /* ===== Game screen ===== */
