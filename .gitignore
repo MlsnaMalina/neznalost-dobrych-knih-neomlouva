@@ -7,6 +7,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# Claude Code (lokální nastavení agenta, worktree, paměť)
+.claude/
+
 # Env / secrets
 .env
 .env.*
