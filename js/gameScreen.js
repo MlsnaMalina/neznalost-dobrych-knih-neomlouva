@@ -74,36 +74,45 @@ window.renderGameScreen = function (state, actions) {
   header.appendChild(giveUpWrap);
   root.appendChild(header);
 
-  // Postava advokáta
-  root.appendChild(window.renderPenalty(mistakes, maxMistakes, state.characterGender));
+  // Dvousloupcový layout: vlevo titul + klávesnice, vpravo postavička + maxim.
+  const stage = document.createElement("div");
+  stage.className = "stage";
 
-  // Maxim card — zobrazí se po chybě, jinak skrytá / placeholder
-  if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
-    root.appendChild(renderMaximCard(mistakes, maxims[mistakes - 1]));
-  }
+  // ===== STŘED — slovo k uhodnutí + klávesnice =====
+  const center = document.createElement("div");
+  center.className = "stage-center";
 
-  // Slovo k uhodnutí
-  root.appendChild(window.renderTitleGuess(tokens, guessed));
+  center.appendChild(window.renderTitleGuess(tokens, guessed));
+  center.appendChild(window.renderKeyboard(guessed, titleLetterSet, actions.onPick));
 
-  // Krátká flash hláška — jen při správném tahu / na začátku
-  const flash = document.createElement("div");
-  flash.className = "flash" + (lastResult === "hit" ? " good" : "");
-  if (lastResult === "hit") flash.textContent = pickMsg(window.GOOD_FLASH);
-  else if (lastResult === "miss") flash.textContent = "";  // maxim card to zastupuje
-  else flash.textContent = "Předložte důkaz.";
-  root.appendChild(flash);
-
-  // Klávesnice
-  root.appendChild(window.renderKeyboard(guessed, titleLetterSet, actions.onPick));
-
-  // Použitá / vyloučená písmena
   const used = document.createElement("div");
   used.className = "used-letters";
   if (guessed.size > 0) {
     const list = Array.from(guessed).join(" · ");
     used.innerHTML = `<span class="label">Vyloučené důkazy:</span> ${list}`;
   }
-  root.appendChild(used);
+  center.appendChild(used);
+
+  // ===== VPRAVO — postava + flash / maxim =====
+  const side = document.createElement("aside");
+  side.className = "stage-side";
+
+  side.appendChild(window.renderPenalty(mistakes, maxMistakes, state.characterGender));
+
+  // Pod postavou: buď karta maximy (po chybě), nebo flash hláška.
+  if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
+    side.appendChild(renderMaximCard(mistakes, maxims[mistakes - 1]));
+  } else {
+    const flash = document.createElement("div");
+    flash.className = "flash" + (lastResult === "hit" ? " good" : "");
+    if (lastResult === "hit") flash.textContent = pickMsg(window.GOOD_FLASH);
+    else flash.textContent = "Předložte důkaz.";
+    side.appendChild(flash);
+  }
+
+  stage.appendChild(center);
+  stage.appendChild(side);
+  root.appendChild(stage);
 
   return root;
 };
