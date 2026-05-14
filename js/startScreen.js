@@ -1,7 +1,10 @@
 /* StartScreen — úvodní obrazovka.
-   Dvousloupcový layout: vlevo SVG ilustrace (šibenice s knihou na kopečku),
-   vpravo titulek, perex, instrukce a CTA tlačítko.
-   Tlačítko volá onStart — předáno z render loop v app.js. */
+   Vertikální layout: nahoře velká SVG ilustrace (šibenice s knihou na
+   kopečku), dole vycentrovaný titulek, perex, instrukce a CTA tlačítko.
+   Vrány v ilustraci jemně poletují (CSS keyframes drift) — pozice
+   ilustrace je dána inline `transform` atributem na vnějším <g class="crow">,
+   animace pak běží na vnitřním <g class="crow-drift">, aby se inline
+   `transform` (= výchozí pozice) a CSS animace (= drift) nepřepisovaly. */
 
 const START_ILLUSTRATION_SVG = `
 <svg viewBox="0 0 340 320" width="100%" role="img" aria-label="Šibenice s visící knihou na kopečku" xmlns="http://www.w3.org/2000/svg">
@@ -61,26 +64,36 @@ const START_ILLUSTRATION_SVG = `
     <rect x="196" y="140" width="32" height="45" rx="1" fill="none" stroke="#7a1238" stroke-width="0.7"/>
   </g>
 
-  <!-- Vrány -->
-  <g transform="translate(52, 110)">
-    <path d="M 0 0 Q -9 -7 -18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
-    <path d="M 0 0 Q 9 -7 18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+  <!-- Vrány — vnější g nese pozici (inline transform), vnitřní .crow-drift běží animace -->
+  <g class="crow" transform="translate(52, 110)">
+    <g class="crow-drift crow-drift-1">
+      <path d="M 0 0 Q -9 -7 -18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 9 -7 18 0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+    </g>
   </g>
-  <g transform="translate(92, 88)">
-    <path d="M 0 0 Q -6 -4 -12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
-    <path d="M 0 0 Q 6 -4 12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
+  <g class="crow" transform="translate(92, 88)">
+    <g class="crow-drift crow-drift-2">
+      <path d="M 0 0 Q -6 -4 -12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M 0 0 Q 6 -4 12 0" fill="none" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
   </g>
-  <g transform="translate(272, 100)">
-    <path d="M 0 0 Q -8 -6 -16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M 0 0 Q 8 -6 16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+  <g class="crow" transform="translate(272, 100)">
+    <g class="crow-drift crow-drift-3">
+      <path d="M 0 0 Q -8 -6 -16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M 0 0 Q 8 -6 16 0" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
   </g>
-  <g transform="translate(300, 78)">
-    <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+  <g class="crow" transform="translate(300, 78)">
+    <g class="crow-drift crow-drift-4">
+      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
   </g>
-  <g transform="translate(30, 72)">
-    <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+  <g class="crow" transform="translate(30, 72)">
+    <g class="crow-drift crow-drift-5">
+      <path d="M 0 0 Q -5 -4 -10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M 0 0 Q 5 -4 10 0" fill="none" stroke="#1a1a1a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
   </g>
 </svg>`;
 
@@ -91,13 +104,13 @@ window.renderStartScreen = function (onStart) {
   const layout = document.createElement("div");
   layout.className = "start-layout";
 
-  // Levý sloupec — ilustrace
+  // Ilustrace nahoře
   const illu = document.createElement("div");
   illu.className = "start-illustration";
   illu.innerHTML = START_ILLUSTRATION_SVG;
   layout.appendChild(illu);
 
-  // Pravý sloupec — text + CTA
+  // Text + CTA dole, vše vycentrované
   const content = document.createElement("div");
   content.className = "start-content";
 

@@ -161,19 +161,24 @@ body {
 .icon-btn svg { display: block; }
 
 /* ===== Start screen =====
-   Dvousloupcový layout — vlevo SVG ilustrace, vpravo text + CTA tlačítko.
+   Vertikální vycentrovaný layout — nahoře velká SVG ilustrace, dole
+   titulek, perex, instrukce a CTA. Rámeček .screen drží stejnou šířku
+   jako herní obrazovka (sdílí .app + .screen).
    Texty mikrokopií zůstávají Sentence Case v DOM; uppercase efekt
    na tlačítku řeší CSS (text-transform), aby sémantika v markupu
    odpovídala závaznému znění „Zahájit řízení". */
 .start-layout {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 48px;
+  text-align: center;
+  gap: 32px;
   padding: 0;
 }
 .start-illustration {
-  flex: 0 0 auto;
-  width: 300px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
 }
 .start-illustration svg {
   width: 100%;
@@ -181,16 +186,18 @@ body {
   display: block;
 }
 .start-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
+  width: 100%;
+  max-width: 64ch;
   min-width: 0;
 }
 .start-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
   line-height: 1.2;
   letter-spacing: -0.02em;
   margin: 0;
@@ -198,28 +205,28 @@ body {
 .start-perex {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1rem;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
   line-height: 1.6;
   color: var(--ink-soft);
   margin: 0;
 }
 .start-sub {
-  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
   line-height: 1.6;
   color: var(--ink-soft);
   margin: 0;
 }
 .start-btn {
-  align-self: flex-start;
+  align-self: center;
   margin-top: 8px;
-  padding: 12px 32px;
+  padding: 14px 38px;
   border-radius: 9999px;
   background: #1a1a1a;
   color: #FAF8F3;
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
@@ -233,16 +240,47 @@ body {
   color: #1a1a1a;
 }
 
+/* ===== Animace vran =====
+   Vrány „poletují" — drift po obloze (translate v malém rádiu) plus
+   plynulé natáčení. Inline transform vnějšího <g class="crow"> drží
+   výchozí pozici, animace běží na vnitřním <g class="crow-drift">.
+   Každá vrána má vlastní timing, aby pohyby nevypadaly synchronně. */
+.crow-drift {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+@keyframes crowFly {
+  0%   { transform: translate(0px, 0px)    rotate(-2deg); }
+  25%  { transform: translate(10px, -6px)  rotate(3deg);  }
+  50%  { transform: translate(20px, -2px)  rotate(-1deg); }
+  75%  { transform: translate(10px, 5px)   rotate(2deg);  }
+  100% { transform: translate(0px, 0px)    rotate(-2deg); }
+}
+@keyframes crowFlyAlt {
+  0%   { transform: translate(0px, 0px)   rotate(2deg);  }
+  25%  { transform: translate(-8px, 4px)  rotate(-3deg); }
+  50%  { transform: translate(-14px, 0px) rotate(1deg);  }
+  75%  { transform: translate(-6px, -5px) rotate(-1deg); }
+  100% { transform: translate(0px, 0px)   rotate(2deg);  }
+}
+.crow-drift-1 { animation: crowFly    7s ease-in-out infinite;       }
+.crow-drift-2 { animation: crowFlyAlt 5.5s ease-in-out infinite -1.2s; }
+.crow-drift-3 { animation: crowFly    6.5s ease-in-out infinite -2.8s; }
+.crow-drift-4 { animation: crowFlyAlt 4.8s ease-in-out infinite -3.5s; }
+.crow-drift-5 { animation: crowFly    8s ease-in-out infinite -1.8s; }
+
+/* Respekt k uživatelskému nastavení redukce pohybu. */
+@media (prefers-reduced-motion: reduce) {
+  .crow-drift,
+  .crow-drift-1, .crow-drift-2, .crow-drift-3, .crow-drift-4, .crow-drift-5 {
+    animation: none;
+  }
+}
+
 @media (max-width: 640px) {
-  .start-layout {
-    flex-direction: column;
-    gap: 32px;
-  }
-  .start-illustration {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
+  .start-layout { gap: 24px; }
+  .start-illustration { max-width: 320px; }
 }
 
 /* ===== Game screen ===== */
