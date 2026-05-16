@@ -43,16 +43,32 @@ window.MAXIMS_POOL = [
   { la: "Magister Yoda dixit: aut legis, aut non legis. Conatus non est.", cs: "Mistr Yoda pravil: buď čteš, nebo nečteš. Pokus neexistuje." },
   { la: "Imperium contra librum.",           cs: "Impérium proti knize." },
   { la: "Princeps Leia in bibliotheca.",     cs: "Princezna Leia v knihovně." },
-  { la: "Ad astra per litteras.",            cs: "Ke hvězdám skrze písmenka." }
+  { la: "Ad astra per litteras.",            cs: "Ke hvězdám skrze písmenka." },
+  { la: "Imperium contraattacavit.",         cs: "Impérium vrátilo úder." }
 ];
 
-/* Závěrečné maximy — vybírá se 1 ze 5 při startu hry, zobrazí se po prohře. */
+/* Závěrečné maximy — vybírá se 1 z 6 při startu hry, zobrazí se po prohře. */
 window.FINAL_MAXIMS = [
   { la: "Lex dura, sed quiz durior.",        cs: "Zákon je tvrdý, ale kvíz tvrdší." },
   { la: "Casus belli: ignorantia.",          cs: "Důvod k válce: neznalost." },
   { la: "Ad acta. Definitive.",              cs: "K aktům. Definitivně." },
   { la: "Causa finita est.",                 cs: "Případ uzavřen." },
-  { la: "Requiescat in pace, candidate.",    cs: "Odpočívej v pokoji, kandidáte." }
+  { la: "Requiescat in pace, candidate.",    cs: "Odpočívej v pokoji, kandidáte." },
+  { la: "Hoc non est liber quem quaeris.",   cs: "Toto není kniha, kterou hledáš." }
+];
+
+/* Timeout maximy — losují se VÝHRADNĚ při překročení časového limitu,
+   NIKDY při běžné chybě. Samotnou timeout funkcionalitu řešit zvlášť. */
+window.TIMEOUT_MAXIMS = [
+  { la: "Festina lente. Sed festina.",                 cs: "Spěchej pomalu. Ale spěchej." },
+  { la: "Mora trahit periculum.",                      cs: "Otálení přináší nebezpečí." },
+  { la: "Octo secundae sunt aeternitas in iure.",      cs: "Osm sekund je věčnost v právu." },
+  { la: "Praeclusio temporis.",                        cs: "Promlčení času." },
+  { la: "Dum dubitas, tempus fugit.",                  cs: "Zatímco váháš, čas letí." },
+  { la: "Cunctator vincitur.",                         cs: "Váhavec prohrává." },
+  { la: "Carpe secundum.",                             cs: "Chop se sekundy." },
+  { la: "Tempus est advocatus crudelissimus.",         cs: "Čas je nejkrutější advokát." },
+  { la: "Procrastinatio mater erroris.",               cs: "Prokrastinace je matka chyby." }
 ];
 
 /* Náhodný výběr N položek z pole (Fisher-Yates shuffle, beze změny vstupu). */
@@ -67,4 +83,9 @@ window.pickMaxims = function (count) {
 
 window.pickFinalMaxim = function () {
   return window.FINAL_MAXIMS[Math.floor(Math.random() * window.FINAL_MAXIMS.length)];
+};
+
+/* Náhodný výběr 1 timeout maximy. Použít VÝHRADNĚ při překročení časového limitu. */
+window.pickTimeoutMaxim = function () {
+  return window.TIMEOUT_MAXIMS[Math.floor(Math.random() * window.TIMEOUT_MAXIMS.length)];
 };
