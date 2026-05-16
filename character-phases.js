@@ -57,7 +57,7 @@ const PHASES = [
   <path d="M 90 245 L 88 360 L 110 360 L 115 248 Z" fill="url(#pantsTexV7-ph0)"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="#2C2C2A"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="url(#pantsTexV7-ph0)"/>
-  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5"/>
+  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5" opacity="0.2"/>
   <ellipse cx="98" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <ellipse cx="142" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <path d="M 75 145 Q 68 165 62 200 L 56 240 Q 54 252 64 256 L 76 254 Q 78 220 82 195 Z" fill="#1a1a1a"/>
@@ -145,7 +145,7 @@ const PHASES = [
   <path d="M 90 245 L 88 360 L 110 360 L 115 248 Z" fill="url(#pantsTexV7-ph1)"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="#2C2C2A"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="url(#pantsTexV7-ph1)"/>
-  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5"/>
+  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5" opacity="0.2"/>
   <ellipse cx="98" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <ellipse cx="142" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <path d="M 75 145 Q 68 165 62 200 L 56 240 Q 54 252 64 256 L 76 254 Q 78 220 82 195 Z" fill="#1a1a1a"/>
@@ -241,7 +241,7 @@ const PHASES = [
   <path d="M 90 245 L 88 360 L 110 360 L 115 248 Z" fill="url(#pantsTexV7-ph2)"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="#2C2C2A"/>
   <path d="M 125 248 L 130 360 L 152 360 L 150 245 Z" fill="url(#pantsTexV7-ph2)"/>
-  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5"/>
+  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5" opacity="0.2"/>
   <ellipse cx="98" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <ellipse cx="142" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <path d="M 75 145 Q 68 165 62 200 L 56 240 Q 54 252 64 256 L 76 254 Q 78 220 82 195 Z" fill="#1a1a1a"/>
@@ -357,7 +357,7 @@ const PHASES = [
   <path d="M 95 300 Q 94 315 96 325 L 97 327 Q 98 320 98 305 Z" fill="#7a4020" opacity="0.7"/>
   <path d="M 100 320 Q 99 335 101 345 L 102 347 Q 103 338 103 325 Z" fill="#7a4020" opacity="0.7"/>
   <ellipse cx="105" cy="280" rx="2" ry="1.3" fill="#7a4020" opacity="0.7"/>
-  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5"/>
+  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5" opacity="0.2"/>
   <ellipse cx="98" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <ellipse cx="142" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <path d="M 75 145 Q 68 165 62 200 L 56 240 Q 54 252 64 256 L 76 254 Q 78 220 82 195 Z" fill="#1a1a1a"/>
@@ -516,7 +516,7 @@ const PHASES = [
   <path d="M 92 265 Q 88 280 92 295 Q 96 305 100 300 Q 102 285 100 270 Q 96 262 92 265 Z" fill="url(#coffeeStainTex-ph4)" opacity="0.5"/>
   <path d="M 95 300 Q 94 315 96 325 L 97 327 Q 98 320 98 305 Z" fill="#7a4020" opacity="0.7"/>
   <path d="M 100 320 Q 99 335 101 345 L 102 347 Q 103 338 103 325 Z" fill="#7a4020" opacity="0.7"/>
-  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5"/>
+  <line x1="120" y1="248" x2="120" y2="360" stroke="#0a0a0a" stroke-width="0.5" opacity="0.2"/>
   <ellipse cx="98" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <ellipse cx="142" cy="362" rx="14" ry="4" fill="#0a0a0a"/>
   <path d="M 75 145 Q 68 165 62 200 L 56 240 Q 54 252 64 256 L 76 254 Q 78 220 82 195 Z" fill="#1a1a1a"/>
