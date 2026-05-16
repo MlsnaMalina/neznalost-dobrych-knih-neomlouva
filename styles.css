@@ -491,6 +491,72 @@ body {
 }
 .key:disabled { cursor: not-allowed; }
 
+/* ===== Časový limit — progress bar nad klávesnicí =====
+   .kb-stack obaluje timer a klávesnici tak, aby měly shodnou šířku
+   (fit-content kopíruje řadu kláves: desktop ~564 px, mobil užší).
+   KROK 1: statický plný bar, animace úbytku + barvy přijdou v dalším kroku. */
+.kb-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+}
+.timer-bar {
+  width: 100%;
+  height: 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  overflow: hidden;
+}
+.timer-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--good);
+  /* Úbytek řeší scaleX (plynulejší než animace šířky).
+     Origin vlevo = pravá hrana ustupuje doleva, jak píše zadání. */
+  transform-origin: left center;
+  /* KROK 2: čisté CSS animace bez JS logiky.
+     - timer-shrink: 100 % → 0 % v 8 s, linear.
+     - timer-color: tři fáze barvy (zelená / vínová / ink), ostré přechody.
+     - timer-pulse: posledních 3 s (delay 5 s), subtle pulz opacity 1 → 0,6 → 1
+       s cyklem 0,5 s = 6 půlcyklů ve fázi vínové + ink.
+     Forwards drží konečný stav (transform 0, barva ink). */
+  animation:
+    timer-shrink 8s linear forwards,
+    timer-color  8s linear forwards,
+    timer-pulse  0.5s ease-in-out 5s infinite;
+}
+
+@keyframes timer-shrink {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* Tři ostré fáze — žádný crossfade, ať je čitelně vidět změna stavu. */
+@keyframes timer-color {
+  0%,   49.99% { background-color: var(--good); }
+  50%,  74.99% { background-color: var(--bad);  }
+  75%,  100%   { background-color: var(--ink);  }
+}
+
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+/* Respekt k uživatelskému nastavení redukce pohybu — pulz vypneme,
+   shrink a barvy zůstávají (jsou informační, ne dekorativní). */
+@media (prefers-reduced-motion: reduce) {
+  .timer-bar-fill {
+    animation:
+      timer-shrink 8s linear forwards,
+      timer-color  8s linear forwards;
+  }
+}
+
 /* ===== Penalty — postava advokáta =====
    Sedm SVG ilustrací (window.PHASES) v jednom kontejneru.
    Viditelnost přepínána z penalty.js přes display:none/block.

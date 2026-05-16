@@ -126,7 +126,24 @@ window.renderGameScreen = function (state, actions) {
   center.className = "stage-center";
 
   center.appendChild(window.renderTitleGuess(tokens, guessed));
-  center.appendChild(window.renderKeyboard(guessed, titleLetterSet, actions.onPick));
+
+  // Wrapper, který drží časový bar nad klávesnicí v přesně stejné šířce
+  // jako řada kláves (díky width: fit-content na .kb-stack).
+  // KROK 1: statický plný bar bez logiky a animace.
+  const kbStack = document.createElement("div");
+  kbStack.className = "kb-stack";
+
+  const timerBar = document.createElement("div");
+  timerBar.className = "timer-bar";
+  timerBar.setAttribute("role", "progressbar");
+  timerBar.setAttribute("aria-label", "Časový limit na výběr písmena");
+  const timerFill = document.createElement("div");
+  timerFill.className = "timer-bar-fill";
+  timerBar.appendChild(timerFill);
+  kbStack.appendChild(timerBar);
+
+  kbStack.appendChild(window.renderKeyboard(guessed, titleLetterSet, actions.onPick));
+  center.appendChild(kbStack);
 
   const used = document.createElement("div");
   used.className = "used-letters";
