@@ -21,7 +21,9 @@
         // hit detekujeme přes guessed.size; mistakes se nemění → použijeme lastResult
         // (každé pickLetter vytváří nový lastResult, takže porovnání referencí stačí)
         window.sound.playHit();
-      } else if (state.lastResult === "miss" && state.mistakes > prev.mistakes) {
+      } else if ((state.lastResult === "miss" || state.lastResult === "timeout")
+                 && state.mistakes > prev.mistakes) {
+        // Timeout je sémanticky penalizace jako špatné písmeno → stejný zvuk.
         window.sound.playMiss();
       }
     }
@@ -33,6 +35,14 @@
   }
 
   function render() {
+    // Hard stop časového limitu — každý render začíná čistě. Zaručuje,
+    // že naplánovaný timeout fire nepřežije přechod na result / start
+    // ani „Stáhnout žalobu" / „Nové řízení". gameScreen.js si pak
+    // v případě potřeby naplánuje nový.
+    if (window.__timeoutTimerId) {
+      clearTimeout(window.__timeoutTimerId);
+      window.__timeoutTimerId = null;
+    }
     const state = game.getState();
     root.innerHTML = "";
 
@@ -50,7 +60,9 @@
       root.appendChild(window.renderGameScreen(state, {
         onPick: (letter) => { game.pickLetter(letter); render(); },
         onNewGame: () => { game.startNewGame(); render(); },
-        onGiveUp: () => { game.giveUp(); render(); }
+        onGiveUp: () => { game.giveUp(); render(); },
+        // Časový limit doběhl bez akce → penalizace + maxima z TIMEOUT_MAXIMS.
+        onTimeout: () => { game.timeoutMiss(); render(); }
       }));
       fireSoundFor(state);
       return;

@@ -82,9 +82,11 @@ function animateMaximHero(hero, card) {
 window.renderGameScreen = function (state, actions) {
   const {
     tokens, guessed, mistakes, maxMistakes,
-    titleLetterSet, lastResult, maxims
+    titleLetterSet, lastResult, activeMaxim
   } = state;
   const remaining = maxMistakes - mistakes;
+  // Sjednocené rozlišení „byla chyba" pro render maximy a pauzu baru.
+  const isMissOrTimeout = (lastResult === "miss" || lastResult === "timeout");
 
   const root = document.createElement("section");
   root.className = "screen game";
@@ -142,6 +144,45 @@ window.renderGameScreen = function (state, actions) {
   timerBar.appendChild(timerFill);
   kbStack.appendChild(timerBar);
 
+  // KROK 3 + 4 — Napojení na herní logiku + timeout penalizace.
+  //
+  // Reset po akci: re-render destruuje DOM → nový .timer-bar-fill mountne
+  // se s čerstvou animací (8 s shrink).
+  //
+  // Pauza během hero (4400 ms): při čerstvé chybě (miss / timeout) drží bar
+  // plný a pauzovaný, po skončení hero se rozjede 8s odpočet.
+  //
+  // Timeout fire: setTimeout zavolá actions.onTimeout, který v app.js spustí
+  // game.timeoutMiss() + render(). Hard stop při změně status (won/lost/start)
+  // zařídí app.js cleanupem window.__timeoutTimerId na začátku každého renderu.
+  const PAUSE_MS  = 4400;  // shoda s délkou hero animace v animateMaximHero
+  const LIMIT_MS  = 8000;  // 8 s na výběr písmena dle zadání
+  const pauseFirst = isMissOrTimeout;
+  if (pauseFirst) {
+    timerFill.style.animationPlayState = "paused";
+    setTimeout(() => {
+      // isConnected ošetří race: hráč mezitím klikl klávesu → nový render →
+      // starý element už není v DOM, callback je tichý no-op.
+      if (timerFill.isConnected) {
+        timerFill.style.animationPlayState = "running";
+      }
+    }, PAUSE_MS);
+  }
+  // Cleanup případného předchozího naplánovaného fire (defenzivně i tady,
+  // i když to dělá app.js — kdyby někdy přišel render bez něj).
+  if (window.__timeoutTimerId) {
+    clearTimeout(window.__timeoutTimerId);
+    window.__timeoutTimerId = null;
+  }
+  const fireDelay = (pauseFirst ? PAUSE_MS : 0) + LIMIT_MS;
+  window.__timeoutTimerId = setTimeout(function fireTimeout() {
+    window.__timeoutTimerId = null;
+    // Dvojnásobné pojištění proti race conditions: pokud bar element už není
+    // v DOM (re-render proběhl), tichý no-op. Akce hráče tak vždy vyhrává.
+    if (!timerFill.isConnected) return;
+    if (typeof actions.onTimeout === "function") actions.onTimeout();
+  }, fireDelay);
+
   kbStack.appendChild(window.renderKeyboard(guessed, titleLetterSet, actions.onPick));
   center.appendChild(kbStack);
 
@@ -159,10 +200,11 @@ window.renderGameScreen = function (state, actions) {
 
   side.appendChild(window.renderPenalty(mistakes, maxMistakes, state.characterGender));
 
-  // Pod postavou: buď karta maximy (po chybě), nebo flash hláška.
+  // Pod postavou: buď karta maximy (po chybě nebo timeoutu), nebo flash hláška.
+  // Zdroj maximy = state.activeMaxim (game.js ji nastavuje podle zdroje chyby).
   let smallCard = null;
-  if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
-    smallCard = renderMaximBlock(mistakes, maxims[mistakes - 1], "card");
+  if (isMissOrTimeout && mistakes > 0 && activeMaxim) {
+    smallCard = renderMaximBlock(mistakes, activeMaxim, "card");
     side.appendChild(smallCard);
   } else {
     const flash = document.createElement("div");
@@ -176,10 +218,10 @@ window.renderGameScreen = function (state, actions) {
   stage.appendChild(side);
   root.appendChild(stage);
 
-  // Hero overlay přes celou stránku — pouze při čerstvé chybě.
+  // Hero overlay přes celou stránku — při čerstvé chybě i timeoutu.
   // Animuje se ze středu obrazovky do pozice malé karty pod soudcem.
-  if (lastResult === "miss" && mistakes > 0 && maxims && maxims[mistakes - 1]) {
-    const hero = renderMaximBlock(mistakes, maxims[mistakes - 1], "hero");
+  if (isMissOrTimeout && mistakes > 0 && activeMaxim) {
+    const hero = renderMaximBlock(mistakes, activeMaxim, "hero");
     root.appendChild(hero);
     // Po layoutu změřit pozici karty a spustit animaci
     requestAnimationFrame(() => animateMaximHero(hero, smallCard));

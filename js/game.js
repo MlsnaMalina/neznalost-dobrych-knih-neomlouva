@@ -18,7 +18,13 @@ window.createGame = function () {
     characterGender: "m",        // "m" | "f"
     // Latinské maximy pro tuto hru (6 ks pro chyby + 1 závěrečná).
     maxims: [],
-    finalMaxim: null
+    finalMaxim: null,
+    // Aktuálně zobrazená maxima — buď z herního poolu (po miss), nebo
+    // z TIMEOUT_MAXIMS (po timeoutu). gameScreen renderuje přímo tuto.
+    activeMaxim: null,
+    // Oddělený čítač spotřebovaných herních maxim (0..5). Roste jen při
+    // miss-letter, ne při timeoutu — aby timeout nečerpal z předvybraných 6.
+    gameMaximIndex: 0
   };
 
   function pickBook() {
@@ -52,7 +58,9 @@ window.createGame = function () {
       lastBookId: book.id,
       characterGender: Math.random() < 0.5 ? "m" : "f",
       maxims: window.pickMaxims(window.MAX_MISTAKES),  // 6 ks, bez opakování
-      finalMaxim: window.pickFinalMaxim()
+      finalMaxim: window.pickFinalMaxim(),
+      activeMaxim: null,
+      gameMaximIndex: 0
     };
   }
 
@@ -63,6 +71,7 @@ window.createGame = function () {
 
     if (state.titleLetterSet.has(letter)) {
       state.lastResult = "hit";
+      state.activeMaxim = null;
       // Výhra? Všechna písmena z titulu uhodnuta?
       const allRevealed = Array.from(state.titleLetterSet)
         .every(l => state.guessed.has(l));
@@ -70,7 +79,33 @@ window.createGame = function () {
     } else {
       state.lastResult = "miss";
       state.mistakes += 1;
-      if (state.mistakes >= state.maxMistakes) state.status = "lost";
+      if (state.mistakes >= state.maxMistakes) {
+        // 6. chyba → verdikt, žádné hero (result screen použije finalMaxim).
+        state.status = "lost";
+        state.activeMaxim = null;
+      } else {
+        // Vybíráme z předvybraného poolu po pořadí přes vlastní čítač.
+        state.activeMaxim = state.maxims[state.gameMaximIndex];
+        state.gameMaximIndex += 1;
+      }
+    }
+  }
+
+  /* Penalizace za překročení časového limitu.
+     Sémanticky stejné jako miss (+1 chyba, případně lost), ale:
+     - lastResult = "timeout" (gameScreen rozliší zdroj maximy)
+     - maxima se losuje z TIMEOUT_MAXIMS (NE z herního poolu)
+     - gameMaximIndex se NEZVYŠUJE — herní pool zůstane nedotčen */
+  function timeoutMiss() {
+    if (state.status !== "playing") return;
+    state.lastResult = "timeout";
+    state.mistakes += 1;
+    if (state.mistakes >= state.maxMistakes) {
+      // 6. chyba (i z timeoutu) → verdikt, žádné hero.
+      state.status = "lost";
+      state.activeMaxim = null;
+    } else {
+      state.activeMaxim = window.pickTimeoutMaxim();
     }
   }
 
@@ -87,6 +122,7 @@ window.createGame = function () {
     getState: () => state,
     startNewGame,
     pickLetter,
+    timeoutMiss,
     giveUp,
     toStart
   };
