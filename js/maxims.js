@@ -3,11 +3,9 @@
    Pořadí maxim v rámci hry odpovídá pořadí chyb (Námitka č. 1, 2, …, 6). */
 
 window.MAXIMS_POOL = [
-  // TIER 1 — subtilní zkroucené klasiky
-  { la: "Ignorantia librorum non excusat.", cs: "Neznalost knih neomlouvá." },
+  // Klasické zkroucené latinismy + AI/IT parodie (původních 17)
+  { la: "Ignorantia librorum non excusat.",  cs: "Neznalost knih neomlouvá." },
   { la: "In dubio pro lectore.",             cs: "V pochybnostech ve prospěch čtenáře." },
-
-  // TIER 2 — absurdní parodie
   { la: "In dubio pro caffeine.",            cs: "V pochybnostech ve prospěch kofeinu." },
   { la: "Habeas corpus, sed non habeas knihu.", cs: "Máš tělo, ale nemáš knihu." },
   { la: "Cogito, ergo legendum.",            cs: "Myslím, tedy je třeba číst." },
@@ -15,8 +13,6 @@ window.MAXIMS_POOL = [
   { la: "Carpe librum.",                     cs: "Chop se knihy." },
   { la: "Mens sana in libro sano.",          cs: "Zdravý duch ve zdravé knize." },
   { la: "Lorem ipsum dolor sit AI.",         cs: "Lorem ipsum bolí — sit AI." },
-
-  // TIER 3 — drsnější humor / pop kulturní reference
   { la: "In dubio pro Netflix.",             cs: "V pochybnostech ve prospěch Netflixu." },
   { la: "Stack overflow in paragraphis.",    cs: "Přetečení zásobníku v paragrafech." },
   { la: "GPT-7 dixit: arrendite vos.",       cs: "GPT-7 pravil: vzdejte se." },
@@ -24,7 +20,30 @@ window.MAXIMS_POOL = [
   { la: "Ad astra per chatbot.",             cs: "Ke hvězdám skrze chatbota." },
   { la: "Et tu, ChatGPT?",                   cs: "I ty, ChatGPT?" },
   { la: "Veritas vincit. Halucinatio quoque.", cs: "Pravda vítězí. Halucinace také." },
-  { la: "Ignorantia AI non excusat.",        cs: "Neznalost AI neomlouvá." }
+  { la: "Ignorantia AI non excusat.",        cs: "Neznalost AI neomlouvá." },
+
+  // Harry Potter
+  { la: "Expelliarmus libri.",               cs: "Odzbroj knihu kouzlem." },
+  { la: "Wingardium leviosa lex.",           cs: "Ať se zákon vznese (a kéž bys ho znal)." },
+  { la: "Avada kedavra ignorantiae.",        cs: "Smrtící kletba na neznalost." },
+  { la: "Lumos in bibliotheca.",             cs: "Rozsviť v knihovně." },
+  { la: "Accio liber!",                      cs: "Knihu sem!" },
+  { la: "Quod patronus tuus est?",           cs: "Jaký je tvůj patron? (Snad odborná literatura.)" },
+
+  // Pán prstenů / Hobit
+  { la: "Unus liber omnes regit.",           cs: "Jedna kniha vládne všem." },
+  { la: "Non omnes qui errant perduntur. Sed lectores certe.", cs: "Ne všichni, kdo bloudí, jsou ztraceni. Čtenáři však ano." },
+  { la: "Mordor in tribunali.",              cs: "Mordor u soudu." },
+  { la: "Mellon — amice, intra.",            cs: "Mellon — příteli, vstup." },
+  { la: "Praecipitium habet pulchrum nomen.", cs: "Propast má krásné jméno." },
+  { la: "Tolle anulum, lege librum.",        cs: "Vezmi prsten, čti knihu." },
+
+  // Star Wars
+  { la: "Sit tecum vis bibliothecae.",       cs: "Nechť je s tebou síla knihovny." },
+  { la: "Magister Yoda dixit: aut legis, aut non legis. Conatus non est.", cs: "Mistr Yoda pravil: buď čteš, nebo nečteš. Pokus neexistuje." },
+  { la: "Imperium contra librum.",           cs: "Impérium proti knize." },
+  { la: "Princeps Leia in bibliotheca.",     cs: "Princezna Leia v knihovně." },
+  { la: "Ad astra per litteras.",            cs: "Ke hvězdám skrze písmenka." }
 ];
 
 /* Závěrečné maximy — vybírá se 1 ze 5 při startu hry, zobrazí se po prohře. */

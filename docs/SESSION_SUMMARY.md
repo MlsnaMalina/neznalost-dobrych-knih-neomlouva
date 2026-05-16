@@ -79,9 +79,42 @@ Po sobě realizováno v tomto pořadí:
 | Šedá v původně striktní paletě. | Uživatelka povolila po krátké diskuzi. Zavedeny tokeny `--ink-soft`, `--line-soft`. |
 | Pleť a kávová skvrna. | Schválené výjimky (`#e6c9a8`, `#6b3a1f`). |
 
-## Otevřené body
+## Otevřené body (po session 1)
 - Kontrola GOOD_FLASH (v `gameScreen.js`) — zachovat / odstranit? Plánovaná na úplný konec hry.
 - Pool maxim: doplnění zbývajících (mezery 3–8, 14–15, 17, 20–21, 29–30).
 - Vercel: ověřit, že je projekt skutečně nalinkovaný a auto-deployuje.
 - Postavička při velmi dlouhých názvech může vizuálně přebíjet sloupec — ale to nikdo z uživatelky zatím nehlásil.
 - Razítko ZAMÍTNUTO i pro 6. „pool" maximu? (zatím se 6. pool-maxima neukáže — místo ní FINAL_MAXIM.)
+
+---
+
+# SESSION 2 (datum: 2026-05-14 → 2026-05-16)
+
+## Co se v session 2 dělalo
+
+### Rozšíření poolu maxim (Úkol 1 ze 3 dokončen)
+Uživatelka přinesla nový zadávací prompt rozdělený na 3 úkoly:
+
+1. **ÚKOL 1 — Rozšíření herního poolu** ✅ HOTOVO.
+   - Tier struktura v `MAXIMS_POOL` zrušena, sloučeno do plochého pole.
+   - Přidáno **17 nových maxim** (6 Harry Potter + 6 Pán prstenů/Hobit + 5 Star Wars).
+   - Celkem nyní **34 herních maxim**.
+   - Organizační komentáře v kódu (Klasické / HP / LOTR / SW), ale technicky jeden plochý pool.
+
+2. **ÚKOL 2 — Přidat 1 novou závěrečnou maximu** ⏸ NEDOKONČENO.
+   - Text: *„Hoc non est liber quem quaeris."* / „Toto není kniha, kterou hledáš." (reference na Obi-Wana).
+   - Čeká na pokyn pokračovat (uživatelka session ukončila po Úkolu 1).
+
+3. **ÚKOL 3 — Vytvořit `TIMEOUT_MAXIMS` pool** ⏸ NEDOKONČENO.
+   - Zatím jen datová struktura, **NE samotný 8s timeout** (ten bude samostatným promptem).
+   - 9 maxim připravených v zadávacím promptu (viz `NEXT_STEPS.md`, sekce „Timeout maximy").
+   - Helper `pickTimeoutMaxim` analogický k `pickFinalMaxim`.
+
+### Drobné otevřené rozhodnutí
+- V přidané maximě **„Mellon — amice, intra."** byla zadána obyčejná pomlčka `-`, ale použit em-dash `—` (ladí s typografií zbytku hry, ale to bylo autonomní rozhodnutí). Uživatelka to **nepotvrdila ani nezamítla** — počkat na verdikt v další session.
+
+## Otevřené po session 2
+- Úkol 2 (1 nová závěrečná maxima)
+- Úkol 3 (TIMEOUT_MAXIMS pool, **ne** samotná timeout funkcionalita)
+- Verdikt k em-dash vs. obyčejné pomlčce u maximy „Mellon".
+- Vše z „Otevřené body (po session 1)" zůstává v platnosti.

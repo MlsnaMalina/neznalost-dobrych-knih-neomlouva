@@ -1,5 +1,40 @@
 # NEXT_STEPS.md
 
+## Priorita: NUTNÉ — okamžitě navázat (zbytek session 2)
+
+### 0a. Dokončit Úkol 2 ze session 2: 1 nová závěrečná maxima
+- **Co:** Do `FINAL_MAXIMS` v `js/maxims.js` přidat položku:
+  ```js
+  { la: "Hoc non est liber quem quaeris.", cs: "Toto není kniha, kterou hledáš." }
+  ```
+- **Proč:** Uživatelka chtěla doplnit Star Wars reference (Obi-Wan). Session 2 končila po Úkolu 1, Úkol 2 zůstal nedokončený.
+- **Kde:** `js/maxims.js`, pole `FINAL_MAXIMS` — přidat jako 6. položku.
+- **Hotovo když:** `FINAL_MAXIMS.length === 6`.
+
+### 0b. Dokončit Úkol 3 ze session 2: `TIMEOUT_MAXIMS` pool
+- **Co:** Vytvořit nový pool `window.TIMEOUT_MAXIMS` v `js/maxims.js` se 9 maximami **a** helper `window.pickTimeoutMaxim`. Samotnou timeout logiku (8 s na výběr) NEdělat — uživatelka to chce řešit samostatným promptem.
+- **9 položek (zadání uživatelky, doslovně):**
+  1. *Festina lente. Sed festina.* / Spěchej pomalu. Ale spěchej.
+  2. *Mora trahit periculum.* / Otálení přináší nebezpečí.
+  3. *Octo secundae sunt aeternitas in iure.* / Osm sekund je věčnost v právu.
+  4. *Praeclusio temporis.* / Promlčení času.
+  5. *Dum dubitas, tempus fugit.* / Zatímco váháš, čas letí.
+  6. *Cunctator vincitur.* / Váhavec prohrává.
+  7. *Carpe secundum.* / Chop se sekundy.
+  8. *Tempus est advocatus crudelissimus.* / Čas je nejkrutější advokát.
+  9. *Procrastinatio mater erroris.* / Prokrastinace je matka chyby.
+- **Kde:** `js/maxims.js`. Strukturu analogickou k `FINAL_MAXIMS` + helper `pickTimeoutMaxim`.
+- **Pravidla:**
+  - Losování VÝHRADNĚ při timeout, NIKDY při běžné chybě.
+  - Pool je samostatný (mimo `MAXIMS_POOL` i `FINAL_MAXIMS`).
+- **Hotovo když:** `TIMEOUT_MAXIMS.length === 9`, `pickTimeoutMaxim` funguje, žádná timeout integrace v `game.js` nebo `gameScreen.js`.
+
+### 0c. Verdikt em-dash u maximy „Mellon"
+- **Co:** Maxima na pozici 27 v `MAXIMS_POOL` zní *„Mellon — amice, intra."* (em-dash). Uživatelka v zadání měla obyčejnou pomlčku `-`. Změna proběhla autonomně, **potvrzení / zamítnutí zatím nebylo**.
+- **Akce:** Zeptat se uživatelky, jestli zachovat em-dash, nebo vrátit `-`. Drobnost na 30 vteřin.
+
+---
+
 ## Priorita: NUTNÉ (před konferencí by mělo být hotové)
 
 ### 1. Ověřit, že Vercel deploy funguje

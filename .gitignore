@@ -18,5 +18,8 @@ Thumbs.db
 # Vercel
 .vercel/
 
+# Claude Code interní worktree/cache
+.claude/
+
 # Logs
 *.log

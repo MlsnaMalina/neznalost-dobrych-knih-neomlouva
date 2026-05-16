@@ -26,11 +26,13 @@
 - Razítko ZAMÍTNUTO se zobrazuje na výsledkové obrazovce přes postavu ve fázi 6.
 
 ### Latinské maximy
-- Pool 17 + 5 závěrečných v `maxims.js`.
+- Pool **34 herních** + 5 závěrečných v `maxims.js` (po session 2 rozšířeno z původních 17).
+- Herní pool organizován do 4 kategorií v komentářích, ale technicky jeden plochý seznam: Klasické zkroucené latinismy + AI/IT parodie (17) · Harry Potter (6) · Pán prstenů / Hobit (6) · Star Wars (5).
 - Při startu hry: shuffle pool → vyber 6 + 1 závěrečnou. Bez opakování v rámci hry.
 - **Hero overlay**: při chybě maxima nejdřív přes celou stránku (3,5 s hold), pak shrink + translate do pozice malé karty pod soudcem (Web Animations API, `getBoundingClientRect`).
 - Poloprůhledné pozadí hero (`--hero-veil`, 82 % bg, blur 2 px).
 - Závěrečná maxima na výsledkové obrazovce při prohře.
+- **`TIMEOUT_MAXIMS` pool neexistuje** — čeká na realizaci v další session.
 
 ### Zvuky
 - Web Audio API, generované programaticky (sinusovky, square wave, triangle).
