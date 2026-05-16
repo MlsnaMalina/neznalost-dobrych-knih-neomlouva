@@ -13,6 +13,7 @@
   --line:  #000000;
   --line-soft: #cfcfcf;  /* vlasové linky, jemné oddělovače */
   --hero-veil: rgba(255, 255, 255, 0.82);  /* poloprůhledné pozadí hero overlay */
+  --track-bg:  rgba(0, 0, 0, 0.05);        /* dráha časového baru — slabý kontrast proti paperu */
   --accent: #4072ad;  /* modrá — CTA / hover */
   --good:   #98c451;  /* zelená — výhra / správné písmeno */
   --bad:    #b11e54;  /* magenta — prohra / špatné písmeno */
@@ -32,6 +33,7 @@
   --line:  #ffffff;
   --line-soft: #3a3a3a;
   --hero-veil: rgba(0, 0, 0, 0.82);
+  --track-bg:  rgba(255, 255, 255, 0.08);  /* dráha baru na černém papíře — kontrastnější alfa */
   /* akcenty zůstávají identické, ladí na obou pozadích */
 }
 
@@ -508,7 +510,9 @@ body {
   height: 10px;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-sm);
-  background: transparent;
+  /* Slabý kontrast track aby byl vidět ÚBYTEK i tam, kde už fill ustoupil
+     (jinak by ztracená část splývala s pozadím, hlavně v dark módu). */
+  background: var(--track-bg);
   overflow: hidden;
 }
 .timer-bar-fill {
